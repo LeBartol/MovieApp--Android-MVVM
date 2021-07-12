@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MovieApp</string>
+    <string name="favorites">Favorites</string>
+    <string name="search">Search</string>
+    <string name="search_movies">Search movies</string>
+    <string name="no_favorites">You don\'t have any favorite movies in your list. \n Search movies by name to add them.</string>
 </resources>
