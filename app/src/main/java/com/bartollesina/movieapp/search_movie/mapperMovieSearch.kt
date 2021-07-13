@@ -1,8 +1,12 @@
 package com.bartollesina.movieapp.search_movie
 
+import com.bartollesina.movieapp.models.MovieEntity
 import com.bartollesina.movieapp.models.SearchResponse
 
-fun mapFromSearchToUi(searchResponse: SearchResponse): List<MovieSingleUi> {
+fun mapFromSearchToUi(
+    searchResponse: SearchResponse,
+    favoritedList: List<MovieEntity>
+): List<MovieSingleUi> {
     val yearsList = searchResponse.movies?.map { it.year }?.distinct()?.sorted()
     val movieListUi = mutableListOf<MovieSingleUi>()
     yearsList?.forEach { year ->
@@ -23,7 +27,8 @@ fun mapFromSearchToUi(searchResponse: SearchResponse): List<MovieSingleUi> {
                     type = LayoutType.Movie,
                     title = it.title,
                     year = it.year,
-                    posterUrl = it.poster
+                    posterUrl = it.poster,
+                    favorited = favoritedList.find { favorite -> favorite.imdbId == it.imdbID } != null
                 )
             )
         }
@@ -36,7 +41,8 @@ data class MovieSingleUi(
     val type: LayoutType,
     val title: String,
     val year: Int,
-    val posterUrl: String
+    val posterUrl: String,
+    val favorited: Boolean = false
 )
 
 enum class LayoutType(type: Int) {

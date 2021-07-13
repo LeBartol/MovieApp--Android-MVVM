@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bartollesina.movieapp.R
@@ -33,6 +34,10 @@ class MovieDetailsFragment : Fragment() {
         viewModel.init(args.imdbId)
         setOnBackClick()
         setOnFavoriteClick()
+        observeData(view)
+    }
+
+    private fun observeData(view: View) {
         viewModel.data.nonNullObserve(viewLifecycleOwner, {
             Glide.with(view)
                 .load(it.poster)
@@ -44,6 +49,17 @@ class MovieDetailsFragment : Fragment() {
             binding.rating.text = it.imdbRating
             binding.genre.text = it.genre
             binding.plot.text = it.plot
+            if (it.favorited) {
+                binding.favoriteBtn.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.favorite, null)
+                binding.favoriteBtn.imageTintList =
+                    ResourcesCompat.getColorStateList(resources, R.color.colorPrimary, null)
+            } else {
+                binding.favoriteBtn.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.non_favorite, null)
+                binding.favoriteBtn.imageTintList =
+                    ResourcesCompat.getColorStateList(resources, R.color.white, null)
+            }
         })
     }
 

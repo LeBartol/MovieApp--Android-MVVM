@@ -7,7 +7,7 @@
     android:background="@color/darkWhite"
     android:clickable="false"
     android:focusable="false"
-    tools:context=".FavoriteMoviesFragment">
+    tools:context=".favorite_movies.FavoriteMoviesFragment">
 
     <!--Toolbar -->
     <View

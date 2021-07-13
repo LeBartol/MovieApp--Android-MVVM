@@ -17,6 +17,8 @@ data class MovieDetails(
     @SerializedName("Poster")
     val poster: String,
     val imdbID: String,
+    @SerializedName("Year")
+    val year: Int,
     @SerializedName("Response")
     val response: Boolean,
     @SerializedName("Error")
