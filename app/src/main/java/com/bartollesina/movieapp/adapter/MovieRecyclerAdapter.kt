@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bartollesina.movieapp.R
 import com.bartollesina.movieapp.databinding.HeaderCardBinding
 import com.bartollesina.movieapp.databinding.MovieCardBinding
-import com.bartollesina.movieapp.search.LayoutType
-import com.bartollesina.movieapp.search.MovieSingleUi
+import com.bartollesina.movieapp.search_movie.LayoutType
+import com.bartollesina.movieapp.search_movie.MovieSingleUi
 import com.bumptech.glide.Glide
 
 
-class MovieRecyclerAdapter() :
+class MovieRecyclerAdapter(private val onItemClickedListener: OnItemClickedListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val movieListUi = mutableListOf<MovieSingleUi>()
 
@@ -26,7 +26,7 @@ class MovieRecyclerAdapter() :
             LayoutType.Movie.ordinal -> {
                 val binding =
                     MovieCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                MovieCardViewHolder(binding)
+                MovieCardViewHolder(binding, onItemClickedListener)
             }
             else -> {
                 throw RuntimeException("No MovieRecyclerAdapter viewType: $viewType")
@@ -53,7 +53,7 @@ class MovieRecyclerAdapter() :
     override fun getItemCount() = movieListUi.size
 
     internal class MovieHeaderViewHolder(
-        private val binding: HeaderCardBinding,
+        private val binding: HeaderCardBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movieSingleUi: MovieSingleUi) {
             binding.tvHeader.text = movieSingleUi.year.toString()
@@ -62,6 +62,7 @@ class MovieRecyclerAdapter() :
 
     internal class MovieCardViewHolder(
         private val binding: MovieCardBinding,
+        private val onItemClickedListener: OnItemClickedListener
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movieSingleUi: MovieSingleUi) {
             binding.tvTitle.text = movieSingleUi.title
@@ -69,6 +70,9 @@ class MovieRecyclerAdapter() :
                 .load(movieSingleUi.posterUrl)
                 .placeholder(R.drawable.movie_placeholder)
                 .into(binding.moviePoster)
+            binding.root.setOnClickListener {
+                onItemClickedListener.onItemClick(movieSingleUi.id)
+            }
         }
     }
 

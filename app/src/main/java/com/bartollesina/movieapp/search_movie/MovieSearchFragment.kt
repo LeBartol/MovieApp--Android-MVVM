@@ -1,4 +1,4 @@
-package com.bartollesina.movieapp.search
+package com.bartollesina.movieapp.search_movie
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -19,7 +19,8 @@ class MovieSearchFragment : Fragment() {
     private var _binding: FragmentMovieSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MovieSearchVM by viewModel()
-    val adapter by lazy { MovieRecyclerAdapter() }
+    val adapter by lazy { MovieRecyclerAdapter(viewModel) }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,7 +34,7 @@ class MovieSearchFragment : Fragment() {
         setOnBackClick()
         setEditText()
         setUpRecyclerView()
-        setObserver()
+        setObservers()
     }
 
     private fun setUpRecyclerView() {
@@ -41,9 +42,14 @@ class MovieSearchFragment : Fragment() {
         binding.searchRecView.adapter = adapter
     }
 
-    private fun setObserver() {
+    private fun setObservers() {
         viewModel.searchData.nonNullObserve(viewLifecycleOwner, {
             adapter.setData(it)
+        })
+        viewModel.openDetails.nonNullObserve(viewLifecycleOwner, {
+            val action =
+                MovieSearchFragmentDirections.actionMovieSearchFragmentToMovieDetailsFragment(it)
+            findNavController().navigate(action)
         })
     }
 
@@ -51,7 +57,6 @@ class MovieSearchFragment : Fragment() {
         binding.searchEditText.addTextChangedListener {
             viewModel.sendSearch(it.toString())
         }
-
     }
 
     private fun setOnBackClick() {

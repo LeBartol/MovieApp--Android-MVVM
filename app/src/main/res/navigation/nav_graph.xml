@@ -9,18 +9,46 @@
         android:id="@+id/favoriteMoviesFragment"
         android:name="com.bartollesina.movieapp.FavoriteMoviesFragment"
         android:label="fragment_favorite_movies"
-        tools:layout="@layout/fragment_favorite_movies" >
+        tools:layout="@layout/fragment_favorite_movies">
         <action
             android:id="@+id/action_favoriteMoviesFragment_to_movieSearchFragment"
             app:destination="@id/movieSearchFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_favoriteMoviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim">
+            <argument
+                android:name="imdbId"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/movieSearchFragment"
-        android:name="com.bartollesina.movieapp.search.MovieSearchFragment"
+        android:name="com.bartollesina.movieapp.search_movie.MovieSearchFragment"
         android:label="fragment_movie_search"
-        tools:layout="@layout/fragment_movie_search" >
+        tools:layout="@layout/fragment_movie_search">
+        <action
+            android:id="@+id/action_movieSearchFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim">
+            <argument
+                android:name="imdbId"
+                app:argType="string" />
+        </action>
     </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.bartollesina.movieapp.details_movie.MovieDetailsFragment"
+        android:label="MovieDetailsFragment">
+        <argument
+            android:name="imdbId"
+            app:argType="string" />
+    </fragment>
+
 
 </navigation>

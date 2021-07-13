@@ -1,4 +1,4 @@
-package com.bartollesina.movieapp.search
+package com.bartollesina.movieapp.search_movie
 
 import com.bartollesina.movieapp.models.SearchResponse
 

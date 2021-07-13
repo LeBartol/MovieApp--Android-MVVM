@@ -7,7 +7,7 @@
     android:background="@color/darkWhite"
     android:clickable="false"
     android:focusable="false"
-    tools:context=".search.MovieSearchFragment">
+    tools:context=".search_movie.MovieSearchFragment">
 
     <View
         android:id="@+id/toolbar_background"
