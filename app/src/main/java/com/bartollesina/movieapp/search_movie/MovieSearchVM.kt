@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bartollesina.movieapp.adapter.OnItemClickedListener
 import com.bartollesina.movieapp.favorite_movies.mapFromSingleUiToEntity
 import com.bartollesina.movieapp.repository.MovieRepository
+import com.bartollesina.movieapp.utils.ResourceProvider
 import com.bartollesina.movieapp.utils.SingleLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -14,10 +15,14 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @FlowPreview
-class MovieSearchVM(private val movieRepository: MovieRepository) : OnItemClickedListener,
-    ViewModel() {
+class MovieSearchVM(
+    private val movieRepository: MovieRepository,
+    private val resourceProvider: ResourceProvider
+) : OnItemClickedListener, ViewModel() {
+
     val searchData = MutableLiveData<List<MovieSingleUi>>()
     val openDetails = SingleLiveData<String>()
+    val loader = SingleLiveData<Boolean>()
     private val channelText = MutableSharedFlow<String>(1)
     private var lastSearch = ""
 
@@ -25,9 +30,13 @@ class MovieSearchVM(private val movieRepository: MovieRepository) : OnItemClicke
         viewModelScope.launch(Dispatchers.IO) {
             observeText()
         }
+        //for first opening of screen
+        searchData.postValue(listOf(getEmptyState(lastSearch, resourceProvider)))
     }
 
     fun sendSearch(text: String) {
+        loader.postValue(true)
+        searchData.postValue(listOf())
         lastSearch = text
         viewModelScope.launch(Dispatchers.IO) {
             channelText.tryEmit(text)
@@ -38,9 +47,10 @@ class MovieSearchVM(private val movieRepository: MovieRepository) : OnItemClicke
         channelText
             .debounce(300)
             .map { Pair(movieRepository.getMoviesSearch(it), movieRepository.getAllMovies()) }
-            .map { mapFromSearchToUi(it.first, it.second) }
+            .map { mapFromSearchToUi(it.first, it.second, resourceProvider, lastSearch) }
             .collect {
                 searchData.postValue(it)
+                loader.postValue(false)
             }
     }
 

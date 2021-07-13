@@ -52,13 +52,9 @@ class MovieDetailsFragment : Fragment() {
             if (it.favorited) {
                 binding.favoriteBtn.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.favorite, null)
-                binding.favoriteBtn.imageTintList =
-                    ResourcesCompat.getColorStateList(resources, R.color.colorPrimary, null)
             } else {
                 binding.favoriteBtn.background =
                     ResourcesCompat.getDrawable(resources, R.drawable.non_favorite, null)
-                binding.favoriteBtn.imageTintList =
-                    ResourcesCompat.getColorStateList(resources, R.color.white, null)
             }
         })
     }

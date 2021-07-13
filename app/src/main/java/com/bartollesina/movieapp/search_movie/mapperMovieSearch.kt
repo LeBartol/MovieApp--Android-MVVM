@@ -1,11 +1,15 @@
 package com.bartollesina.movieapp.search_movie
 
+import com.bartollesina.movieapp.R
 import com.bartollesina.movieapp.models.MovieEntity
 import com.bartollesina.movieapp.models.SearchResponse
+import com.bartollesina.movieapp.utils.ResourceProvider
 
 fun mapFromSearchToUi(
     searchResponse: SearchResponse,
-    favoritedList: List<MovieEntity>
+    favoritedList: List<MovieEntity>,
+    resourceProvider: ResourceProvider,
+    lastSearch: String
 ): List<MovieSingleUi> {
     val yearsList = searchResponse.movies?.map { it.year }?.distinct()?.sorted()
     val movieListUi = mutableListOf<MovieSingleUi>()
@@ -33,7 +37,25 @@ fun mapFromSearchToUi(
             )
         }
     }
+    if (movieListUi.isEmpty()) {
+        movieListUi.add(getEmptyState(lastSearch, resourceProvider))
+    }
     return movieListUi
+}
+
+fun getEmptyState(lastSearch: String, resourceProvider: ResourceProvider): MovieSingleUi {
+    val titleEmpty = if (lastSearch.isEmpty()) {
+        resourceProvider.getString(R.string.enter_search)
+    } else {
+        resourceProvider.getString(R.string.no_results)
+    }
+    return MovieSingleUi(
+        id = "",
+        type = LayoutType.Empty,
+        title = titleEmpty,
+        year = -1,
+        posterUrl = ""
+    )
 }
 
 data class MovieSingleUi(

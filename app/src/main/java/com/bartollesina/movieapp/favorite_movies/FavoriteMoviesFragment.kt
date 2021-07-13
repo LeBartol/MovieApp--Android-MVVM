@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bartollesina.movieapp.R
 import com.bartollesina.movieapp.adapter.MovieRecyclerAdapter
 import com.bartollesina.movieapp.databinding.FragmentFavoriteMoviesBinding
-import com.bartollesina.movieapp.search_movie.MovieSearchFragmentDirections
 import com.bartollesina.movieapp.utils.nonNullObserve
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -34,6 +33,7 @@ class FavoriteMoviesFragment : Fragment() {
         setOnSearchClick()
         setUpRecyclerView()
         setObservers()
+        viewModel.getAllMovies()
     }
 
     private fun setOnSearchClick() {

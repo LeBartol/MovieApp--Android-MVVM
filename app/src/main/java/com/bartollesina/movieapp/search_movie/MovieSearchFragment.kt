@@ -51,6 +51,10 @@ class MovieSearchFragment : Fragment() {
                 MovieSearchFragmentDirections.actionMovieSearchFragmentToMovieDetailsFragment(it)
             findNavController().navigate(action)
         })
+        viewModel.loader.nonNullObserve(viewLifecycleOwner, {
+            binding.loader.visibility = if (it) View.VISIBLE else View.GONE
+
+        })
     }
 
     private fun setEditText() {

@@ -28,7 +28,7 @@ val appModule = module {
     single { provideRetrofit() }
     factory { ResourceProvider(androidContext()) }
     single { MovieRepository(get(),get()) }
-    viewModel { MovieSearchVM(get()) }
+    viewModel { MovieSearchVM(get(),get()) }
     viewModel { MovieDetailsVM(get()) }
     viewModel{FavoriteMoviesVM(get(),get())}
 }

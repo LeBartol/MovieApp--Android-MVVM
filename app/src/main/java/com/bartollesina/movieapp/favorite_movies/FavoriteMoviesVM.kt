@@ -19,11 +19,7 @@ class FavoriteMoviesVM(
     val data = MutableLiveData<List<MovieSingleUi>>()
     val openDetails = SingleLiveData<String>()
 
-    init {
-        getAllMovies()
-    }
-
-    private fun getAllMovies() {
+    fun getAllMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             data.postValue(mapFromFavoritesToUi(movieRepository.getAllMovies(), resourceProvider))
         }
